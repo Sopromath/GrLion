@@ -102,7 +102,7 @@ void value_for_histogram(Base &b, unsigned number_of_rolls = 100000) {
 }
 
 int main() {
-    Dice dice(100, 1), dice_1(6, 171), dice_2(6, 19), dice_3(6, 11);
+    Dice dice(100, 1), dice_1(100, 171), dice_2(100, 19), dice_3(100, 11);
     ThreeDicePool three_dice(dice_1, dice_2, dice_3);
     PenaltyDice penalty_dice_1(dice), penalty_dice_3(three_dice);
     BonusDice bonus_dice_1(dice), bonus_dice_3(three_dice);
