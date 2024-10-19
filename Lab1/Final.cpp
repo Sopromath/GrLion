@@ -37,12 +37,12 @@ private:
     Dice dice_1, dice_2, dice_3;
 };
 
-class PenaltyDice: public Base {
+class PenaltyDice: public virtual Base {
 public:
     PenaltyDice(Base &b):
         base(b) { }
 
-        unsigned roll() {
+        unsigned roll() override{
             return std::min(base.roll(), base.roll());
         }
 
@@ -50,12 +50,12 @@ private:
     Base &base;
 };
 
-class BonusDice: public Base {
+class BonusDice: public virtual Base {
 public:
     BonusDice(Base &b):
         base(b) { }
 
-        unsigned roll() {
+        unsigned roll() override{
             return std::max(base.roll(), base.roll());
         }
 
@@ -102,11 +102,30 @@ void value_for_histogram(Base &b, unsigned number_of_rolls = 100000) {
 }
 
 int main() {
-    Dice dice(100, 1), dice_1(100, 171), dice_2(100, 19), dice_3(100, 11);
+    Dice dice(100, 1), dice_1(6, 171), dice_2(6, 19), dice_3(6, 11);
     ThreeDicePool three_dice(dice_1, dice_2, dice_3);
     PenaltyDice penalty_dice_1(dice), penalty_dice_3(three_dice);
     BonusDice bonus_dice_1(dice), bonus_dice_3(three_dice);
     DoubleDice double_dice_1(dice), double_dice_3(three_dice);
 
+    std::cout << "Expected value for one roll: " << expected_value(dice) << "\n";
+    std::cout << "Expected value for three rolls: " << expected_value(three_dice) << "\n";
+    std::cout << "The rools of Dice: ";
+    value_for_histogram(dice);
+    std::cout << "The rools of PenaltyDice: ";
+    value_for_histogram(penalty_dice_1);
+    std::cout << "The rools of BonusDice: ";
     value_for_histogram(bonus_dice_1);
+    std::cout << "The rools of DoubleDice: ";
+    value_for_histogram(double_dice_1);
+    std::cout << "The rools of ThreeDicePool: ";
+    value_for_histogram(three_dice);
+    std::cout << "The rools of PenaltyDice_3: ";
+    value_for_histogram(penalty_dice_3);
+    std::cout << "The rools of BonusDice_3: ";
+    value_for_histogram(bonus_dice_3);
+    std::cout << "The rools of DoubleDice_3: ";
+    value_for_histogram(double_dice_3);
+
+    return 0;
 }
